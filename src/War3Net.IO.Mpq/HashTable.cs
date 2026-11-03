@@ -175,6 +175,27 @@
         }
 
         /// <summary>
+        /// Gives each slot that <paramref name="slotsInUse"/> says was in use, and is empty now, a deleted entry, so the
+        /// game's lookups still walk past it. Nothing changes when the table is not the same size.
+        /// </summary>
+        /// <param name="slotsInUse">For each slot of a table the same size, whether it was in use.</param>
+        internal void KeepSlotsInUse(IReadOnlyList<bool> slotsInUse)
+        {
+            if (slotsInUse.Count != _hashes.Length)
+            {
+                return;
+            }
+
+            for (var i = 0; i < _hashes.Length; i++)
+            {
+                if (slotsInUse[i] && _hashes[i].IsEmpty)
+                {
+                    _hashes[i] = MpqHash.DELETED;
+                }
+            }
+        }
+
+        /// <summary>
         /// Writes the <see cref="MpqHash"/> at index <paramref name="i"/>.
         /// </summary>
         /// <param name="writer">The <see cref="BinaryWriter"/> to write the content to.</param>
@@ -212,7 +233,7 @@
 
                 for (var i = 0; i < hashCollisions; i++)
                 {
-                    var j = (startIndex + 1) & _mask;
+                    var j = (startIndex + i) & _mask;
                     if (_hashes[j].IsEmpty)
                     {
                         _hashes[j] = MpqHash.DELETED;

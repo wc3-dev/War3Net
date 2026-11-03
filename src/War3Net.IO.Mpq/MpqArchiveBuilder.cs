@@ -3,6 +3,7 @@
     public class MpqArchiveBuilder : IEnumerable<MpqFile>
     {
         private readonly ushort? _originalHashTableSize;
+        private readonly bool[]? _originalSlotsInUse;
         private readonly List<MpqFile> _originalFiles;
         private readonly List<MpqFile> _modifiedFiles;
         private readonly List<ulong> _removedFiles;
@@ -23,6 +24,7 @@
             }
 
             _originalHashTableSize = (ushort)originalMpqArchive.HashTable.Size;
+            _originalSlotsInUse = originalMpqArchive.GetHashTable().Select(hash => !hash.IsEmpty).ToArray();
             _originalFiles = new List<MpqFile>(originalMpqArchive.GetMpqFiles());
             _modifiedFiles = new List<MpqFile>();
             _removedFiles = new List<ulong>();
@@ -127,6 +129,7 @@
             }
 
             createOptions.HashTableSize ??= _originalHashTableSize;
+            createOptions.SlotsInUse = _originalSlotsInUse;
             MpqArchive.Create(stream, GetMpqFiles().ToArray(), createOptions, leaveOpen).Dispose();
         }
 
