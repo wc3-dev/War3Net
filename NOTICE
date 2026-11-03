@@ -1,9 +1,10 @@
 War3Net, Moonwell's fork (https://github.com/mdlsvensson/War3Net, branch moonwell-package)
 
 Copyright (c) Drake53 and Contributors, licensed under the MIT License (LICENSE).
-This is a fork of https://github.com/Drake53/War3Net, from its master at v6.1.2 (5f6f7ba). It publishes three of
+This is a fork of https://github.com/Drake53/War3Net, from its master at v6.1.2 (5f6f7ba). It publishes four of
 War3Net's packages under other ids, for Moonwell (https://github.com/mdlsvensson/moonwell):
-Moonwell.War3Net.IO.Slk, Moonwell.War3Net.Build.Core and Moonwell.War3Net.Build. Their assemblies keep War3Net's names.
+Moonwell.War3Net.IO.Slk, Moonwell.War3Net.IO.Mpq, Moonwell.War3Net.Build.Core and Moonwell.War3Net.Build. Their
+assemblies keep War3Net's names.
 
 The files below were changed by mdlsvensson in 2026. Each change is in the history of the moonwell-package branch.
 
@@ -15,6 +16,7 @@ The files below were changed by mdlsvensson in 2026. Each change is in the histo
 Directory.Packages.props
 docs/changelogs/War3Net.Build.Core.changelog.md
 docs/changelogs/War3Net.Build.changelog.md
+docs/changelogs/War3Net.IO.Mpq.changelog.md
 docs/changelogs/War3Net.IO.Slk.changelog.md
 nuget.config
 src/Directory.Build.props
@@ -34,6 +36,12 @@ src/War3Net.Build.Core/Serialization/Text/Script/TriggerStrings.cs
 src/War3Net.Build.Core/War3Net.Build.Core.csproj
 src/War3Net.Build/MapScriptBuilder.cs
 src/War3Net.Build/War3Net.Build.csproj
+src/War3Net.IO.Mpq/HashTable.cs
+src/War3Net.IO.Mpq/MpqArchive.cs
+src/War3Net.IO.Mpq/MpqArchiveBuilder.cs
+src/War3Net.IO.Mpq/MpqArchiveCreateOptions.cs
+src/War3Net.IO.Mpq/MpqHeader.cs
+src/War3Net.IO.Mpq/War3Net.IO.Mpq.csproj
 src/War3Net.IO.Slk/SylkParser.cs
 src/War3Net.IO.Slk/War3Net.IO.Slk.csproj
 tests/War3Net.Build.Core.Tests/GlobalUsings.cs
@@ -41,6 +49,7 @@ tests/War3Net.Build.Core.Tests/Info/GameDataVersionTests.cs
 tests/War3Net.Build.Core.Tests/Object/ObjectDataRoundTripTests.cs
 tests/War3Net.Build.Core.Tests/Script/TriggerStringsRoundTripTests.cs
 tests/War3Net.Build.Tests/MapScriptBuilderMissingFileTests.cs
+tests/War3Net.IO.Mpq.Tests/MpqGameLookupTests.cs
 tests/War3Net.IO.Slk.Tests/GlobalUsings.cs
 tests/War3Net.IO.Slk.Tests/SylkParserTests.cs
 tests/War3Net.TestTools.UnitTesting/TestData/RoundTrip/ (every file in it)

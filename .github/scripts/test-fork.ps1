@@ -1,9 +1,9 @@
-# Runs the tests of the three packages the fork publishes (IO.Slk, Build.Core, Build) and fails on a test that is not in
+# Runs the tests of the four packages the fork publishes (IO.Slk, IO.Mpq, Build.Core, Build) and fails on a test that is not in
 # .github/known-failures/<project>.txt. War3Net.Build.Core.Tests has 12 cases that fail on Drake53's unchanged master as well
 # (data-driven cases on real map files, most of them marked flaky); the list is what they are, so a new failure still fails the run.
 $ErrorActionPreference = 'Stop'
 
-$projects = 'War3Net.IO.Slk.Tests', 'War3Net.Build.Tests', 'War3Net.Build.Core.Tests'
+$projects = 'War3Net.IO.Slk.Tests', 'War3Net.IO.Mpq.Tests', 'War3Net.Build.Tests', 'War3Net.Build.Core.Tests'
 $unexpected = 0
 New-Item -ItemType Directory -Force TestResults | Out-Null
 

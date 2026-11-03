@@ -6,7 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
-_No unreleased changes._
+### Added
+
+- `MpqArchive.Header` is public. `MpqArchive.GetHashTable` gives every slot of the hash table in order, empty and deleted ones too, and `MpqArchive.FindHashIndex` the slot the game finds a file in for a locale, or -1.
+
+### Changed
+
+- A file is looked up as the game looks it up (`FileExists`, `OpenFile`): from the slot its name hashes to, forward to the first empty slot. A file past an empty slot from there is not found, as the game does not find it.
+- `MpqArchiveBuilder` keeps the game's lookups: a hash table slot the original archive used that is empty in the new one, of the same size, gets a deleted entry, so a file kept at its old slot, as one with no known name is, is still found.
+
+### Fixed
+
+- An archive written after bytes before its header, such as World Editor's 512-byte HM3W block, has a header size of 32 and an archive size counted from the header. The header size was 32 minus the bytes before it, and the archive size counted them.
+- A file added with hash collisions gets a deleted entry in each empty slot from its home to its own. Only the slot after its home was marked, again and again.
 
 ## [v6.0.3] - 2026-07-04
 

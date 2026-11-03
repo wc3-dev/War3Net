@@ -19,7 +19,7 @@
 
   <ItemGroup Condition="'$(PUBLISH)'=='true'">
     <PackageReference Include="War3Net.CodeAnalysis.Jass" />
-    <PackageReference Include="War3Net.IO.Mpq" />
+    <PackageReference Include="Moonwell.War3Net.IO.Mpq" />
     <PackageReference Include="Moonwell.War3Net.IO.Slk" />
   </ItemGroup>
 

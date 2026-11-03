@@ -1,4 +1,4 @@
-# The tests of the three packages Moonwell's fork publishes. War3Net.Build.Core.Tests has cases that fail on Drake53's unchanged
+# The tests of the four packages Moonwell's fork publishes. War3Net.Build.Core.Tests has cases that fail on Drake53's unchanged
 # master; .github/known-failures lists them, and any other failure fails the run.
 name: Test
 

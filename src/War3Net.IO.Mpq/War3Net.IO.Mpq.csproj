@@ -5,7 +5,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Description>Read and write MPQ archives.</Description>
+    <PackageId>Moonwell.War3Net.IO.Mpq</PackageId>
+    <Description>Read and write MPQ archives. Moonwell's fork of War3Net.IO.Mpq.</Description>
     <PackageTags>modding;mpq;warcraft3;wc3</PackageTags>
   </PropertyGroup>
 
