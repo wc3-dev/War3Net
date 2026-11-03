@@ -352,6 +352,11 @@
                     InsertMpqFile(attributesMpqFile, true, false);
                 }
 
+                if (createOptions.SlotsInUse is { } slotsInUse)
+                {
+                    _hashTable.KeepSlotsInUse(slotsInUse);
+                }
+
                 _baseStream.Position = endOfStream;
                 _hashTable.WriteTo(writer);
                 _blockTable.WriteTo(writer);
@@ -409,7 +414,10 @@
         /// </summary>
         internal int BlockSize => _blockSize;
 
-        internal MpqHeader Header => _mpqHeader;
+        /// <summary>
+        /// Gets the archive's header, as the file holds it.
+        /// </summary>
+        public MpqHeader Header => _mpqHeader;
 
         internal HashTable HashTable => _hashTable;
 
@@ -785,6 +793,52 @@
             }
         }
 
+        /// <summary>
+        /// Gets every slot of the <see cref="HashTable"/> in order, empty and deleted ones included.
+        /// </summary>
+        public IReadOnlyList<MpqHash> GetHashTable()
+        {
+            var slots = new MpqHash[_hashTable.Size];
+            for (var i = 0; i < slots.Length; i++)
+            {
+                slots[i] = _hashTable[i];
+            }
+
+            return slots;
+        }
+
+        /// <summary>
+        /// Gets the index of the <see cref="HashTable"/> slot the game finds a file in: from the slot its name hashes to,
+        /// forward to the first empty slot, stepping over deleted entries, the first entry with the name and
+        /// <paramref name="locale"/> that points at a block. -1 when the game does not find it.
+        /// </summary>
+        public int FindHashIndex(string fileName, MpqLocale locale)
+        {
+            if (!StormBuffer.TryGetHashString(fileName, 0, out var home))
+            {
+                return -1;
+            }
+
+            var mask = (uint)_hashTable.Size - 1;
+            var name = fileName.GetStringHash();
+            for (var step = 0u; step < _hashTable.Size; step++)
+            {
+                var index = (home + step) & mask;
+                var hash = _hashTable[index];
+                if (hash.IsEmpty)
+                {
+                    break;
+                }
+
+                if (hash.Name == name && hash.Locale == locale && hash.BlockIndex < _blockTable.Size)
+                {
+                    return (int)index;
+                }
+            }
+
+            return -1;
+        }
+
         // TODO: set hashCollisions values (currently they're always set to 0)
         public IEnumerable<MpqFile> GetMpqFiles()
         {
@@ -941,36 +995,20 @@
                 yield break;
             }
 
-            index &= _mpqHeader.HashTableSize - 1;
+            // As the game looks a file up: from the slot its name hashes to, forward to the first empty slot.
+            var mask = _mpqHeader.HashTableSize - 1;
             var name = fileName.GetStringHash();
-
-            var foundAnyHash = false;
-
-            for (var i = index; i < _hashTable.Size; ++i)
+            for (var step = 0u; step < _hashTable.Size; ++step)
             {
-                var hash = _hashTable[i];
-                if (hash.Name == name)
-                {
-                    yield return hash;
-                    foundAnyHash = true;
-                }
-                else if (hash.IsEmpty && foundAnyHash)
+                var hash = _hashTable[(index + step) & mask];
+                if (hash.IsEmpty)
                 {
                     yield break;
                 }
-            }
 
-            for (uint i = 0; i < index; ++i)
-            {
-                var hash = _hashTable[i];
                 if (hash.Name == name)
                 {
                     yield return hash;
-                    foundAnyHash = true;
-                }
-                else if (hash.IsEmpty && foundAnyHash)
-                {
-                    yield break;
                 }
             }
         }

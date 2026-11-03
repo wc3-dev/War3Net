@@ -43,5 +43,11 @@
         public MpqFileCreateMode? AttributesCreateMode { get; set; }
 
         public AttributesFlags AttributesFlags { get; set; }
+
+        /// <summary>
+        /// The hash table slots an archive this one is rebuilt from had in use. Each that is empty in the new table, of
+        /// the same size, gets a deleted entry, so the game's lookups still walk past it to the files they found before.
+        /// </summary>
+        internal IReadOnlyList<bool>? SlotsInUse { get; set; }
     }
 }

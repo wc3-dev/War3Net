@@ -34,9 +34,10 @@
 
             if (archiveBeforeTables)
             {
-                // MPQ contents are in order: header, archive, HT, BT
-                DataOffset = Size - headerOffset;
-                ArchiveSize = Size + fileArchiveSize + hashTableSize + blockTableSize;
+                // MPQ contents are in order: header, archive, HT, BT. fileArchiveSize counts from the stream's start, so
+                // it includes the headerOffset bytes before the header, which the header's own fields leave out.
+                DataOffset = Size;
+                ArchiveSize = Size + fileArchiveSize + hashTableSize + blockTableSize - headerOffset;
                 MpqVersion = 0;
                 BlockSize = blockSize;
                 HashTableOffset = Size + fileArchiveSize - headerOffset;
