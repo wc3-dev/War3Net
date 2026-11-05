@@ -19,6 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - An archive written after bytes before its header, such as World Editor's 512-byte HM3W block, has a header size of 32 and an archive size counted from the header. The header size was 32 minus the bytes before it, and the archive size counted them.
 - A file added with hash collisions gets a deleted entry in each empty slot from its home to its own. Only the slot after its home was marked, again and again.
+- A hash table entry whose block index is past the block table is no file, as the game sees it: `FileExists`, `OpenFile` and `FindHashIndex` step over it, and `MpqArchiveBuilder` leaves it out where it threw an `ArgumentOutOfRangeException`.
 
 ## [v6.0.3] - 2026-07-04
 
