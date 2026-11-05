@@ -13,9 +13,9 @@
 		<PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.0.0" />
 		<PackageVersion Include="MSTest.TestAdapter" Version="2.2.10" />
 		<PackageVersion Include="MSTest.TestFramework" Version="2.2.10" />
-		<PackageVersion Include="Moonwell.War3Net.Build" Version="6.1.2-moonwell.5" />
-		<PackageVersion Include="Moonwell.War3Net.Build.Core" Version="6.1.2-moonwell.5" />
-		<PackageVersion Include="Moonwell.War3Net.IO.Mpq" Version="6.0.3-moonwell.1" />
+		<PackageVersion Include="Moonwell.War3Net.Build" Version="6.1.2-moonwell.6" />
+		<PackageVersion Include="Moonwell.War3Net.Build.Core" Version="6.1.2-moonwell.6" />
+		<PackageVersion Include="Moonwell.War3Net.IO.Mpq" Version="6.0.3-moonwell.2" />
 		<PackageVersion Include="Moonwell.War3Net.IO.Slk" Version="6.0.2-moonwell.3" />
 		<PackageVersion Include="NAudio" Version="1.10.0" />
 		<PackageVersion Include="NLua" Version="1.4.32" />
