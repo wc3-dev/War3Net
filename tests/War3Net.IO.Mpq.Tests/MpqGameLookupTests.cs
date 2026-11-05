@@ -81,6 +81,33 @@ namespace War3Net.IO.Mpq.Tests
             Assert.IsTrue(rebuilt.FileExists(second));
         }
 
+        [TestMethod]
+        public void TestHashEntryPastTheBlockTableIsNoFile()
+        {
+            using var stream = new MemoryStream();
+            using (MpqArchive.Create(stream, new[] { File("a.txt") }, Options(), leaveOpen: true))
+            {
+            }
+
+            stream.Position = 0;
+            using var archive = MpqArchive.Open(stream);
+
+            // An entry whose block index is past the block table, as some maps have: the game finds no file through it.
+            var junk = Enumerable.Range(0, 100).Select(i => $"junk{i}.txt").First(name => archive.HashTable[(int)MpqHash.GetIndex(name, Mask)].IsEmpty);
+            archive.HashTable[(int)MpqHash.GetIndex(junk, Mask)] = new MpqHash(junk, Mask, MpqLocale.Neutral, 7);
+
+            Assert.IsFalse(archive.FileExists(junk));
+            Assert.AreEqual(-1, archive.FindHashIndex(junk, MpqLocale.Neutral));
+
+            using var rebuiltStream = new MemoryStream();
+            new MpqArchiveBuilder(archive).SaveTo(rebuiltStream, Options(), leaveOpen: true);
+
+            rebuiltStream.Position = 0;
+            using var rebuilt = MpqArchive.Open(rebuiltStream);
+            Assert.IsTrue(rebuilt.FileExists("a.txt"));
+            Assert.IsFalse(rebuilt.FileExists(junk));
+        }
+
         private static MpqArchiveCreateOptions Options() => new()
         {
             BlockSize = 3,
